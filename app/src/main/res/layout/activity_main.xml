@@ -18,7 +18,7 @@
         app:cardElevation="0dp"
         app:layout_constraintDimensionRatio="1,1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/search_bar">
 
         <TextView
             android:layout_width="wrap_content"
@@ -43,9 +43,8 @@
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/materialCardView2"
-        android:layout_width="0dp"
-        app:layout_constraintWidth_percent="0.4"
+        android:id="@+id/search_bar"
+        android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_margin="16dp"
         android:elevation="0dp"
@@ -53,11 +52,33 @@
         app:cardCornerRadius="16dp"
         app:cardElevation="0dp"
         app:layout_constraintStart_toEndOf="@+id/materialCardView"
-        app:layout_constraintTop_toTopOf="parent"></com.google.android.material.card.MaterialCardView>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.4">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search"
+            android:textColor="@color/dark_grey"
+            android:textSize="14sp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/search_bar"
+            app:layout_constraintStart_toStartOf="@+id/search_bar"
+            app:layout_constraintTop_toTopOf="@+id/search_bar" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_search_24"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="16dp"
+            app:tint="@color/dark_grey" />
+    </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="0dp"
-        app:layout_constraintWidth_percent="0.6"
         android:layout_height="40dp"
         android:layout_margin="16dp"
         android:elevation="0dp"
@@ -65,6 +86,18 @@
         app:cardCornerRadius="16dp"
         app:cardElevation="0dp"
         app:layout_constraintStart_toEndOf="@+id/materialCardView"
-        app:layout_constraintTop_toBottomOf="@+id/materialCardView2"></com.google.android.material.card.MaterialCardView>
+        app:layout_constraintTop_toBottomOf="@+id/search_bar"
+        app:layout_constraintWidth_percent="0.6"></com.google.android.material.card.MaterialCardView>
 
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnFloat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="32dp"
+        android:backgroundTint="@color/purple_500"
+        android:src="@drawable/baseline_add_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@color/white" />
 </androidx.constraintlayout.widget.ConstraintLayout>
