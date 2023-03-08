@@ -31,12 +31,13 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:padding="0dp"
+            android:lineSpacingMultiplier="0.9"
             android:includeFontPadding="false"
             android:lineSpacingExtra="0dp"
             android:text="Appointment\nScheduler"
             android:textAlignment="textStart"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="18sp"
             app:layout_constraintWidth_percent="0.5" />
 
 
