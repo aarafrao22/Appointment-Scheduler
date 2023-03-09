@@ -3,8 +3,12 @@ package com.aarafrao.busterlord_hiringscheduler
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.app.TimePickerDialog
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.aarafrao.busterlord_hiringscheduler.databinding.ActivityAddAppointmentBinding
@@ -14,7 +18,7 @@ import java.util.*
 
 class AddAppointmentActivity : AppCompatActivity() {
     lateinit var binding: ActivityAddAppointmentBinding
-    val myCalendar: Calendar = Calendar.getInstance()
+    lateinit var myCalendar: Calendar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,46 +26,55 @@ class AddAppointmentActivity : AppCompatActivity() {
         binding = ActivityAddAppointmentBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val date =
-            OnDateSetListener { view, year, month, day ->
-                myCalendar.set(Calendar.YEAR, year)
-                myCalendar.set(Calendar.MONTH, month)
-                myCalendar.set(Calendar.DAY_OF_MONTH, day)
-                updateLabel()
+
+
+
+        binding.apply {
+            imgDatePicker.setOnClickListener {
+                showDateTimePicker()
             }
 
+            imgTimePicker.setOnClickListener {
+                showTimePicker()
+            }
 
-        binding.edTime.setOnClickListener {
-            showTimePicker()
-        }
-        binding.edDate.setOnClickListener {
-            DatePickerDialog(
-                this@AddAppointmentActivity,
-                date,
-                myCalendar[Calendar.YEAR],
-                myCalendar[Calendar.MONTH],
-                myCalendar[Calendar.DAY_OF_MONTH]
-            ).show()
+            btnSave.setOnClickListener {
 
-        }
-        binding.btnSave.setOnClickListener {
+                validateEv()
+            }
 
-            validateEv()
+            imgClose.setOnClickListener {
+                closeSc()
+            }
         }
 
-        binding.imgClose.setOnClickListener {
-            closeSc()
-        }
+
+    }
+
+    fun showDateTimePicker() {
+        val currentDate = Calendar.getInstance()
+        myCalendar = Calendar.getInstance()
+
+        DatePickerDialog(
+            this@AddAppointmentActivity, { view, year, monthOfYear, dayOfMonth ->
+
+                myCalendar.set(year, monthOfYear, dayOfMonth)
+                val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.US)
+                binding.edDate.setText(dateFormat.format(myCalendar.time))
+            }, currentDate[Calendar.YEAR], currentDate[Calendar.MONTH], currentDate[Calendar.DATE]
+        ).show()
+
+
     }
 
     private fun validateEv() {
-        if (binding.edName.text != null) {
-            if (binding.edDate.text != null) {
-                if (binding.edDuration.text != null) {
-                    if (binding.edPlace.text != null) {
+        if (binding.edName.text.toString() != "") {
+            if (binding.edDate.text.toString() != "") {
+                if (binding.edDuration.text.toString() != "") {
+                    if (binding.edPlace.text.toString() != "") {
                         saveData()
                     } else binding.edPlaceLayout.error = "Invalid Input"
-                } else binding.edDateLayout.error = "Invalid Input"
+                } else binding.edDurationLayout.error = "Invalid Input"
             } else binding.edDateLayout.error = "Invalid Input"
 
         } else binding.edNameLayout.error = "Invalid Input"
@@ -85,13 +98,19 @@ class AddAppointmentActivity : AppCompatActivity() {
     }
 
     private fun showTimePicker() {
-        val mcurrentTime = Calendar.getInstance()
-        val hour = mcurrentTime[Calendar.HOUR_OF_DAY]
-        val minute = mcurrentTime[Calendar.MINUTE]
-        val timePickerDialog = TimePickerDialog(
-            this@AddAppointmentActivity,
-            { timePicker, selectedHour, selectedMinute -> }, hour, minute, false
-        )
-        timePickerDialog.show()
+        val currentDate = Calendar.getInstance()
+        myCalendar = Calendar.getInstance()
+
+        TimePickerDialog(
+            this@AddAppointmentActivity, { view, hourOfDay, minute ->
+                myCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
+                myCalendar.set(Calendar.MINUTE, minute)
+                Log.v(TAG, "The choosen one " + myCalendar.getTime())
+
+                val dateFormat = SimpleDateFormat("hh:mm aa", Locale.US)
+                binding.edTime.setText(dateFormat.format(myCalendar.time))
+
+            }, currentDate[Calendar.HOUR_OF_DAY], currentDate[Calendar.MINUTE], false
+        ).show()
     }
 }

@@ -84,7 +84,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/edDateLayout"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:hint="Date"
@@ -93,19 +93,45 @@
                     app:boxCornerRadiusTopEnd="30dp"
                     app:boxCornerRadiusTopStart="30dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.76">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edDate"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textEmailAddress" />
+                        android:inputType="date" />
                 </com.google.android.material.textfield.TextInputLayout>
+
+
+                <ImageView
+                    android:id="@+id/imgDatePicker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:src="@drawable/calendar_line"
+                    app:layout_constraintBottom_toBottomOf="@+id/edDateLayout"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/edDateLayout"
+                    app:layout_constraintTop_toTopOf="@+id/edDateLayout"
+                    app:tint="@color/purple_500" />
+
+                <ImageView
+                    android:id="@+id/imgTimePicker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:src="@drawable/time_line"
+                    app:layout_constraintBottom_toBottomOf="@+id/edTimeLayout"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/edDateLayout"
+                    app:layout_constraintTop_toBottomOf="@+id/edDateLayout"
+                    app:tint="@color/purple_500" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/edTimeLayout"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:hint="Time"
@@ -114,7 +140,8 @@
                     app:boxCornerRadiusTopEnd="30dp"
                     app:boxCornerRadiusTopStart="30dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/edDateLayout">
+                    app:layout_constraintTop_toBottomOf="@id/edDateLayout"
+                    app:layout_constraintWidth_percent="0.76">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edTime"
