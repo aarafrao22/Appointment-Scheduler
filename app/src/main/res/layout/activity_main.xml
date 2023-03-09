@@ -6,89 +6,29 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/materialCardView"
-        android:layout_width="0dp"
-        android:layout_height="100dp"
-        android:layout_margin="16dp"
-        android:elevation="0dp"
-        app:cardBackgroundColor="@color/purple_500"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="0dp"
-        app:layout_constraintDimensionRatio="1,1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_bar">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="8dp"
-            android:text="Today"
-            android:textColor="@color/white"
-            android:textSize="12sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="8dp"
-            android:text="29"
-            android:textColor="@color/white"
-            android:textSize="32sp"
-            android:textStyle="bold" />
-
-
-    </com.google.android.material.card.MaterialCardView>
-
-    <com.google.android.material.card.MaterialCardView
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/search_bar"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_margin="16dp"
+        android:background="@drawable/bg"
         android:elevation="0dp"
-        app:cardBackgroundColor="@color/grey"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="0dp"
-        app:layout_constraintStart_toEndOf="@+id/materialCardView"
+        android:hint="Search"
+        android:padding="8dp"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.4">
+        app:layout_constraintWidth_percent="0.4" />
 
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Search"
-            android:textColor="@color/dark_grey"
-            android:textSize="14sp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="16dp"
-            app:layout_constraintBottom_toBottomOf="@+id/search_bar"
-            app:layout_constraintStart_toStartOf="@+id/search_bar"
-            app:layout_constraintTop_toTopOf="@+id/search_bar" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/baseline_search_24"
-            android:layout_gravity="end|center_vertical"
-            android:layout_marginEnd="16dp"
-            app:tint="@color/dark_grey" />
-    </com.google.android.material.card.MaterialCardView>
-
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="0dp"
-        android:layout_height="40dp"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:elevation="0dp"
-        app:cardBackgroundColor="@color/grey"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="0dp"
-        app:layout_constraintStart_toEndOf="@+id/materialCardView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/search_bar"
-        app:layout_constraintWidth_percent="0.6"></com.google.android.material.card.MaterialCardView>
-
+        tools:listitem="@layout/item_rv" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnFloat"
