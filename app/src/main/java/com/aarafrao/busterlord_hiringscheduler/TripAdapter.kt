@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class TripAdapter(tripModelList: List<TripModel>, clickListener: ClickListener, context: Context) :
     RecyclerView.Adapter<TripAdapter.VH>() {
-    private val tripModelList: List<TripModel>
+    var tripModelList: List<TripModel>
     private val clickListener: ClickListener
     private val context: Context
 
@@ -36,6 +36,18 @@ class TripAdapter(tripModelList: List<TripModel>, clickListener: ClickListener, 
 
     override fun getItemCount(): Int {
         return tripModelList.size
+    }
+
+    fun filterData(query: String): List<TripModel> {
+        val filteredList = mutableListOf<TripModel>()
+        for (data in tripModelList) {
+            if (data.title.contains(query, ignoreCase = true) /*|| data.date.contains(query, ignoreCase = true) ||
+                data.location.contains(query, ignoreCase = true) || data.duration.contains(query, ignoreCase = true)*/) {
+                filteredList.add(data)
+            }
+
+        }
+        return filteredList
     }
 
     inner class VH(itemView: View) : RecyclerView.ViewHolder(itemView),

@@ -25,7 +25,6 @@ class AddAppointmentActivity : AppCompatActivity() {
 
 
 
-
         binding.apply {
             imgDatePicker.setOnClickListener {
                 showDateTimePicker()
@@ -44,8 +43,6 @@ class AddAppointmentActivity : AppCompatActivity() {
                 closeSc()
             }
         }
-
-
     }
 
     private fun showDateTimePicker() {
@@ -77,6 +74,7 @@ class AddAppointmentActivity : AppCompatActivity() {
                                 "found conflict",
                                 Toast.LENGTH_SHORT
                             ).show()
+
                     } else binding.edPlaceLayout.error = "Invalid Input"
                 } else binding.edDurationLayout.error = "Invalid Input"
             } else binding.edDateLayout.error = "Invalid Input"
