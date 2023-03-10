@@ -54,7 +54,6 @@ class AddAppointmentActivity : AppCompatActivity() {
 
         DatePickerDialog(
             this@AddAppointmentActivity, { _, year, monthOfYear, dayOfMonth ->
-
                 myCalendar.set(year, monthOfYear, dayOfMonth)
                 val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.US)
                 binding.edDate.setText(dateFormat.format(myCalendar.time))
@@ -87,7 +86,7 @@ class AddAppointmentActivity : AppCompatActivity() {
 
     private fun isConflict(): Boolean {
 
-        return true
+        return false
     }
 
     private fun closeSc() {
