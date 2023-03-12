@@ -28,11 +28,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, ClickListener {
         mutableList = ArrayList()
 
         mutableList.add(TripModel("Interview", "iTecknologi", "98 min", "12-12-1", "9:20"))
+        mutableList.add(TripModel("hehe", "iTecknologi", "98 min", "12-12-1", "9:20"))
         mutableList.add(TripModel("Interview", "iTecknologi", "98 min", "12-12-1", "9:20"))
+        mutableList.add(TripModel("hoho", "iTecknologi", "98 min", "12-12-1", "9:20"))
         mutableList.add(TripModel("Interview", "iTecknologi", "98 min", "12-12-1", "9:20"))
-        mutableList.add(TripModel("Interview", "iTecknologi", "98 min", "12-12-1", "9:20"))
-        mutableList.add(TripModel("Interview", "iTecknologi", "98 min", "12-12-1", "9:20"))
-        mutableList.add(TripModel("Interview", "iTecknologi", "98 min", "12-12-1", "9:20"))
+        mutableList.add(TripModel("haha", "iTecknologi", "98 min", "12-12-1", "9:20"))
         mutableList.add(TripModel("Interview", "iTecknologi", "98 min", "12-12-1", "9:20"))
 
 
