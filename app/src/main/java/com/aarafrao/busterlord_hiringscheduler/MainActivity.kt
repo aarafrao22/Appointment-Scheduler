@@ -43,9 +43,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, ClickListener {
         binding.searchBar.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
 
-                val filteredData = adapter.filterData(s.toString())
-                adapter.tripModelList = filteredData
-                adapter.notifyDataSetChanged()
+                if (s.toString()!=""){
+
+                    val filteredData = adapter.filterData(s.toString())
+                    adapter.tripModelList = filteredData
+                    adapter.notifyDataSetChanged()
+                }else{
+                    adapter.tripModelList = mutableList
+                    adapter.notifyDataSetChanged()
+
+                }
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
