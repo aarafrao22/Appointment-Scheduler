@@ -118,22 +118,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, ClickListener {
         }
     }
 
-    override fun onBackPressed() {
-
-        mutableList = ArrayList()
-
-        mutableList.add(TripModel("Interview", "iTecknologi", "98 min", "12-12-1", "9:20"))
-        mutableList.add(TripModel("Interview", "iTecknologi", "98 min", "12-12-1", "9:20"))
-        mutableList.add(TripModel("Interview", "iTecknologi", "98 min", "12-12-1", "9:20"))
-        mutableList.add(TripModel("Interview", "iTecknologi", "98 min", "12-12-1", "9:20"))
-        mutableList.add(TripModel("Interview", "iTecknologi", "98 min", "12-12-1", "9:20"))
-        mutableList.add(TripModel("Interview", "iTecknologi", "98 min", "12-12-1", "9:20"))
-        mutableList.add(TripModel("Interview", "iTecknologi", "98 min", "12-12-1", "9:20"))
-
-
-    }
-
     override fun onItemClicked(position: Int) {
-        Toast.makeText(applicationContext, "NONE", Toast.LENGTH_SHORT).show()
+        val model = TripModel(mutableList[position].title,mutableList[position].location,mutableList[position].duration,mutableList[position].date,mutableList[position].time)
     }
 }
