@@ -108,17 +108,17 @@ class AddAppointmentActivity : AppCompatActivity() {
         databaseHelper.notificationDAO().addNotification(
             Notification(
                 binding.edName.text.toString(),
-                binding.edName.text.toString(),
-                binding.edName.text.toString(),
-                binding.edName.text.toString(),
-                binding.edName.text.toString()
+                binding.edPlace.text.toString(),
+                binding.edDuration.text.toString(),
+                binding.edTime.text.toString(),
+                binding.edDate.text.toString()
             )
         )
 
-        val notifications: MutableList<com.aarafrao.busterlord_hiringscheduler.Database.Notification>? =
-            databaseHelper.notificationDAO().getAllNotifications()
+        val notifications: MutableList<Notification>? =
+            databaseHelper.notificationDAO().allNotifications
         for (i in notifications!!.indices) {
-
+            Log.d(TAG, "saveData: $notifications.")
         }
         startActivity(Intent(applicationContext, MainActivity::class.java))
         finish()

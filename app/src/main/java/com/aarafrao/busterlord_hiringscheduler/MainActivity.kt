@@ -34,32 +34,47 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, ClickListener {
         binding.btnFloat.setOnClickListener {
             startActivity(
                 Intent(
-                    applicationContext,
-                    AddAppointmentActivity::class.java
+                    applicationContext, AddAppointmentActivity::class.java
                 )
             )
         }
+        mutableList = ArrayList()
 
         binding.btnToday.setOnClickListener {
             Toast.makeText(applicationContext, "Today Data Showed", Toast.LENGTH_SHORT).show()
         }
+        val databaseHelper: DatabaseHelper = DatabaseHelper.getDB(applicationContext)
+        val notifications: java.util.ArrayList<Notification> =
+            databaseHelper.notificationDAO().allNotifications as java.util.ArrayList<Notification>
 
-        mutableList = ArrayList()
+        for (i in 0 until notifications.size) {
+
+            try {
+                if (notifications.size > 0) {
+
+                    mutableList.add(
+                        AppointModel(
+                            notifications[i].title,
+                            notifications[i].location,
+                            notifications[i].duration,
+                            notifications[i].date,
+                            notifications[i].time
+                        )
+                    )
+
+
+                }
+            } catch (e: ParseException) {
+                e.printStackTrace()
+            }
+
+        }
         calendar = Calendar.getInstance()
         calendar.set(Calendar.MONTH, Calendar.NOVEMBER)
         calendar.set(Calendar.DAY_OF_MONTH, 9)
         calendar.set(Calendar.YEAR, 2012)
         calendar.add(Calendar.DAY_OF_MONTH, 1)
         calendar.add(Calendar.YEAR, 1)
-
-
-//        mutableList.add(TripModel("Interview", "iTecknologi", "98 min", "12-12-1", "9:20"))
-//        mutableList.add(TripModel("hehe", "iTecknologi", "98 min", "12-12-1", "9:20"))
-//        mutableList.add(TripModel("Interview", "iTecknologi", "98 min", "12-12-1", "9:20"))
-//        mutableList.add(TripModel("hoho", "iTecknologi", "98 min", "12-12-1", "9:20"))
-//        mutableList.add(TripModel("Interview", "iTecknologi", "98 min", "12-12-1", "9:20"))
-//        mutableList.add(TripModel("haha", "iTecknologi", "98 min", "12-12-1", "9:20"))
-//        mutableList.add(TripModel("Interview", "iTecknologi", "98 min", "12-12-1", "9:20"))
 
 
         binding.rv.layoutManager = LinearLayoutManager(this)
@@ -98,27 +113,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, ClickListener {
 
         }
 
-        val databaseHelper: DatabaseHelper = DatabaseHelper.getDB(applicationContext)
-        val notifications: java.util.ArrayList<Notification> =
-            databaseHelper.notificationDAO()
-                .getAllNotifications() as java.util.ArrayList<Notification>
 
-        for (i in 0 until notifications.size - 1) {
-            val context: String = notifications[i].getContext()
-            val img: Int
-
-            try {
-                if (notifications.size > 0) {
-
-//                    mutableList.add()
-
-
-                }
-            } catch (e: ParseException) {
-                e.printStackTrace()
-            }
-
-        }
     }
 
 
