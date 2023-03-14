@@ -8,7 +8,7 @@
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/search_bar"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_margin="16dp"
         android:background="@drawable/bg"
@@ -16,20 +16,47 @@
         android:hint="Search"
         android:padding="8dp"
         android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.4" />
+        app:layout_constraintWidth_percent="0.78" />
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/todayBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:padding="0dp"
+        android:textSize="8dp"
+        android:text=" "
+        app:icon="@drawable/calendar_line"
+        app:layout_constraintBottom_toBottomOf="@+id/search_bar"
+        app:iconGravity="textStart"
+        app:iconPadding="8dp"
+        app:layout_constraintStart_toEndOf="@+id/search_bar"
+        app:layout_constraintTop_toTopOf="@+id/search_bar"
+        app:layout_constraintWidth_percent="0.12" />
 
     <CalendarView
         android:id="@+id/simpleCalendarView"
         android:layout_width="0dp"
-        app:layout_constraintWidth_percent="0.92"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:background="@drawable/bg"
-        app:layout_constraintEnd_toEndOf="@+id/search_bar"
-        app:layout_constraintStart_toStartOf="@+id/search_bar"
-        app:layout_constraintTop_toBottomOf="@+id/search_bar" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_bar"
+        app:layout_constraintWidth_percent="0.92" />
+
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Appointments"
+        app:layout_constraintStart_toStartOf="@+id/simpleCalendarView"
+        app:layout_constraintTop_toBottomOf="@+id/simpleCalendarView" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv"
@@ -37,9 +64,9 @@
         android:layout_height="0dp"
         android:layout_margin="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.4"
+        app:layout_constraintHeight_percent="0.35"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/simpleCalendarView"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
         tools:listitem="@layout/item_rv" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -53,16 +80,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:tint="@color/white" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btnToday"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="8dp"
-        android:backgroundTint="@color/purple_500"
-        android:src="@drawable/calendar_line"
-        app:layout_constraintBottom_toTopOf="@+id/btnFloat"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:tint="@color/white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

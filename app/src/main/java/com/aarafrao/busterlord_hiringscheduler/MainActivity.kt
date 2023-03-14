@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, ClickListener {
         }
         mutableList = ArrayList()
 
-        binding.btnToday.setOnClickListener {
+        binding.todayBtn.setOnClickListener {
             Toast.makeText(applicationContext, "Today Data Showed", Toast.LENGTH_SHORT).show()
         }
         val databaseHelper: DatabaseHelper = DatabaseHelper.getDB(applicationContext)

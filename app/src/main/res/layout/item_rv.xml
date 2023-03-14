@@ -7,7 +7,7 @@
     android:background="@drawable/bg"
     android:backgroundTint="@color/grey"
     android:elevation="0dp"
-    android:padding="16dp">
+    android:padding="8dp">
 
     <LinearLayout
         android:id="@+id/linearLayout7"
