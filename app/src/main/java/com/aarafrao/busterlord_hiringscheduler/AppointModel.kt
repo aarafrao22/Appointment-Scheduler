@@ -1,6 +1,6 @@
 package com.aarafrao.busterlord_hiringscheduler
 
-data class TripModel(
+data class AppointModel(
     var title: String,
     var location: String,
     var duration: String,

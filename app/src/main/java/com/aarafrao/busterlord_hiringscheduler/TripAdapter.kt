@@ -7,14 +7,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class TripAdapter(tripModelList: List<TripModel>, clickListener: ClickListener, context: Context) :
+class TripAdapter(appointModelList: List<AppointModel>, clickListener: ClickListener, context: Context) :
     RecyclerView.Adapter<TripAdapter.VH>() {
-    var tripModelList: List<TripModel>
+    var appointModelList: List<AppointModel>
     private val clickListener: ClickListener
     private val context: Context
 
     init {
-        this.tripModelList = tripModelList
+        this.appointModelList = appointModelList
         this.clickListener = clickListener
         this.context = context
     }
@@ -27,21 +27,21 @@ class TripAdapter(tripModelList: List<TripModel>, clickListener: ClickListener, 
 
     override fun onBindViewHolder(holder: VH, position: Int) {
         holder.setData(
-            tripModelList[position].time,
-            tripModelList[position].location,
-            tripModelList[position].duration,
-            tripModelList[position].date,
-            tripModelList[position].title
+            appointModelList[position].time,
+            appointModelList[position].location,
+            appointModelList[position].duration,
+            appointModelList[position].date,
+            appointModelList[position].title
         )
     }
 
     override fun getItemCount(): Int {
-        return tripModelList.size
+        return appointModelList.size
     }
 
-    fun filterData(query: String): List<TripModel> {
-        val filteredList = mutableListOf<TripModel>()
-        for (data in tripModelList) {
+    fun filterData(query: String): List<AppointModel> {
+        val filteredList = mutableListOf<AppointModel>()
+        for (data in appointModelList) {
             if (data.title.contains(query, ignoreCase = true) /*|| data.date.contains(query, ignoreCase = true) ||
                 data.location.contains(query, ignoreCase = true) || data.duration.contains(query, ignoreCase = true)*/) {
                 filteredList.add(data)

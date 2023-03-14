@@ -1,56 +1,88 @@
 package com.aarafrao.busterlord_hiringscheduler
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.aarafrao.busterlord_hiringscheduler.Database.DatabaseHelper
+import com.aarafrao.busterlord_hiringscheduler.Database.Notification
 import com.aarafrao.busterlord_hiringscheduler.databinding.ActivityMainBinding
 import java.text.ParseException
+import java.util.*
+import kotlin.collections.ArrayList
+
 
 class MainActivity : AppCompatActivity(), View.OnClickListener, ClickListener {
-
+    private lateinit var calendar: Calendar
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: TripAdapter
-    private lateinit var mutableList: MutableList<TripModel>
+    var mutableList: MutableList<AppointModel> = ArrayList()
+
+
+    @SuppressLint("UseCompatLoadingForDrawables")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view: View = binding.root
         setContentView(view)
 
-        binding.btnFloat.setOnClickListener(this)
+        binding.btnFloat.setOnClickListener {
+            startActivity(
+                Intent(
+                    applicationContext,
+                    AddAppointmentActivity::class.java
+                )
+            )
+        }
+
+        binding.btnToday.setOnClickListener {
+            Toast.makeText(applicationContext, "Today Data Showed", Toast.LENGTH_SHORT).show()
+        }
 
         mutableList = ArrayList()
+        calendar = Calendar.getInstance()
+        calendar.set(Calendar.MONTH, Calendar.NOVEMBER)
+        calendar.set(Calendar.DAY_OF_MONTH, 9)
+        calendar.set(Calendar.YEAR, 2012)
+        calendar.add(Calendar.DAY_OF_MONTH, 1)
+        calendar.add(Calendar.YEAR, 1)
 
-        mutableList.add(TripModel("Interview", "iTecknologi", "98 min", "12-12-1", "9:20"))
-        mutableList.add(TripModel("hehe", "iTecknologi", "98 min", "12-12-1", "9:20"))
-        mutableList.add(TripModel("Interview", "iTecknologi", "98 min", "12-12-1", "9:20"))
-        mutableList.add(TripModel("hoho", "iTecknologi", "98 min", "12-12-1", "9:20"))
-        mutableList.add(TripModel("Interview", "iTecknologi", "98 min", "12-12-1", "9:20"))
-        mutableList.add(TripModel("haha", "iTecknologi", "98 min", "12-12-1", "9:20"))
-        mutableList.add(TripModel("Interview", "iTecknologi", "98 min", "12-12-1", "9:20"))
+
+//        mutableList.add(TripModel("Interview", "iTecknologi", "98 min", "12-12-1", "9:20"))
+//        mutableList.add(TripModel("hehe", "iTecknologi", "98 min", "12-12-1", "9:20"))
+//        mutableList.add(TripModel("Interview", "iTecknologi", "98 min", "12-12-1", "9:20"))
+//        mutableList.add(TripModel("hoho", "iTecknologi", "98 min", "12-12-1", "9:20"))
+//        mutableList.add(TripModel("Interview", "iTecknologi", "98 min", "12-12-1", "9:20"))
+//        mutableList.add(TripModel("haha", "iTecknologi", "98 min", "12-12-1", "9:20"))
+//        mutableList.add(TripModel("Interview", "iTecknologi", "98 min", "12-12-1", "9:20"))
 
 
         binding.rv.layoutManager = LinearLayoutManager(this)
         adapter = TripAdapter(mutableList, this, applicationContext)
         binding.rv.adapter = adapter
+        adapter.notifyDataSetChanged()
+        val d = getDrawable(R.drawable.bg_white)
+        binding.simpleCalendarView.selectedDateVerticalBar = d
 
         binding.searchBar.addTextChangedListener(object : TextWatcher {
+            @SuppressLint("NotifyDataSetChanged")
             override fun afterTextChanged(s: Editable?) {
 
-                if (s.toString()!=""){
+                if (s.toString() != "") {
 
                     val filteredData = adapter.filterData(s.toString())
-                    adapter.tripModelList = filteredData
+                    adapter.appointModelList = filteredData
                     adapter.notifyDataSetChanged()
-                }else{
-                    adapter.tripModelList = mutableList
+                    binding.simpleCalendarView.visibility = View.GONE
+                } else {
+                    adapter.appointModelList = mutableList
                     adapter.notifyDataSetChanged()
+                    binding.simpleCalendarView.visibility = View.VISIBLE
 
                 }
             }
@@ -60,65 +92,57 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, ClickListener {
         })
 
 
-//        val databaseHelper: DatabaseHelper = DatabaseHelper.getDB(applicationContext)
-//        val notifications: java.util.ArrayList<com.itecknologi.iteckapp.Database.Notification> =
-//            databaseHelper.notificationDAO().getAllNotifications()
-//
-//
-//        list = java.util.ArrayList<NotificationModel>()
-//
-//        for (var i = 0 i < notifications . size; i++) {
-//
-//            val context: String = notifications[i].getContext()
-//            val img: Int
-//
-//            when (context) {
-//                "1" -> img = R.drawable.battery_disconnected
-//                "2" -> img = R.drawable.battery_connected
-//                "3" -> img = R.drawable.fence
-//                "4" -> img = R.drawable.ig_on
-//                "5" -> img = R.drawable.ig_of
-//                else -> img = R.drawable.logopie
-//            }
-//
-//            try {
-//                if (notifications.size > 0) {
-//                    if (!isDateOlderThan7Days(java.lang.Long.valueOf(notifications[i].getTime()))) {
-//                        val a: Int = list.size - i
-//
-////                        if (a > 0) {
-//                        list.add(
-//                            a, NotificationModel(
-//                                img,
-//                                notifications[i].getTitle(),
-//                                notifications[i].getMessage(),
-//                                unixToDate(notifications[i].getTime())
-//                            )
-//                        )
-//                        //                        }
-//                    } else {
-//                        databaseHelper.notificationDAO().deleteNotification(notifications[i])
-//                        notifications.remove(notifications[i])
-//                    }
-//                }
-//            } catch (e: ParseException) {
-//                e.printStackTrace()
-//            }
+        binding.simpleCalendarView.setOnDateChangeListener { calendarView, i, i1, i2 ->
+            val msg = "Selected date Day: " + i2 + " Month : " + i1 + 1 + " Year " + i
+            Toast.makeText(applicationContext, msg, Toast.LENGTH_SHORT).show()
 
+        }
+
+        val databaseHelper: DatabaseHelper = DatabaseHelper.getDB(applicationContext)
+        val notifications: java.util.ArrayList<Notification> =
+            databaseHelper.notificationDAO()
+                .getAllNotifications() as java.util.ArrayList<Notification>
+
+        for (i in 0 until notifications.size - 1) {
+            val context: String = notifications[i].getContext()
+            val img: Int
+
+            try {
+                if (notifications.size > 0) {
+
+//                    mutableList.add()
+
+
+                }
+            } catch (e: ParseException) {
+                e.printStackTrace()
+            }
+
+        }
     }
 
+
     override fun onClick(p0: View?) {
-        when (p0?.id) {
-            R.id.btnFloat -> startActivity(
-                Intent(
-                    applicationContext,
-                    AddAppointmentActivity::class.java
-                )
-            )
+        adapter.notifyDataSetChanged()
+    }
+
+    public fun addElement(model: AppointModel) {
+        if (mutableList != null) {
+            mutableList.add(model)
+        } else {
+            mutableList = ArrayList()
+            mutableList.add(model)
+
         }
     }
 
     override fun onItemClicked(position: Int) {
-        val model = TripModel(mutableList[position].title,mutableList[position].location,mutableList[position].duration,mutableList[position].date,mutableList[position].time)
+        val model = AppointModel(
+            mutableList[position].title,
+            mutableList[position].location,
+            mutableList[position].duration,
+            mutableList[position].date,
+            mutableList[position].time
+        )
     }
 }

@@ -20,15 +20,26 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_percent="0.4" />
 
+    <CalendarView
+        android:id="@+id/simpleCalendarView"
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent="0.92"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/bg"
+        app:layout_constraintEnd_toEndOf="@+id/search_bar"
+        app:layout_constraintStart_toStartOf="@+id/search_bar"
+        app:layout_constraintTop_toBottomOf="@+id/search_bar" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="16dp"
-        app:layout_constraintHeight_percent="0.88"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.4"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_bar"
+        app:layout_constraintTop_toBottomOf="@+id/simpleCalendarView"
         tools:listitem="@layout/item_rv" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -41,4 +52,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:tint="@color/white" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnToday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="@color/purple_500"
+        android:src="@drawable/calendar_line"
+        app:layout_constraintBottom_toTopOf="@+id/btnFloat"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@color/white" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

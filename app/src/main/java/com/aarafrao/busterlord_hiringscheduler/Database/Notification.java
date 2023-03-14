@@ -13,53 +13,35 @@ public class Notification {
     @ColumnInfo(name = "title")
     private String title;
 
-    @ColumnInfo(name = "context")
-    private String context;
+    @ColumnInfo(name = "location")
+    private String location;
 
-    @ColumnInfo(name = "message")
-    private String message;
+    @ColumnInfo(name = "duration")
+    private String duration;
 
     @ColumnInfo(name = "time")
     private String time;
 
+    @ColumnInfo(name = "date")
+    private String date;
 
-    Notification(int id, String title, String message, String context) {
+
+    public Notification(int id, String title, String location, String duration, String time, String date) {
         this.id = id;
         this.title = title;
-        this.message = message;
-        this.context = context;
+        this.location = location;
+        this.duration = duration;
+        this.time = time;
+        this.date = date;
     }
 
     @Ignore
-    public Notification(String title, String message, String context, String time) {
+    public Notification(String title, String location, String duration, String time, String date) {
         this.title = title;
-        this.message = message;
-        this.context = context;
+        this.location = location;
+        this.duration = duration;
         this.time = time;
-    }
-
-    public String getContext() {
-        return context;
-    }
-
-    public void setContext(String context) {
-        this.context = context;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+        this.date = date;
     }
 
     public String getTitle() {
@@ -70,11 +52,35 @@ public class Notification {
         this.title = title;
     }
 
-    public String getMessage() {
-        return message;
+    public String getLocation() {
+        return location;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

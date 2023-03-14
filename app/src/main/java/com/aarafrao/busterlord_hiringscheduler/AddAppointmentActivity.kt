@@ -8,6 +8,8 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.aarafrao.busterlord_hiringscheduler.Database.DatabaseHelper
+import com.aarafrao.busterlord_hiringscheduler.Database.Notification
 import com.aarafrao.busterlord_hiringscheduler.databinding.ActivityAddAppointmentBinding
 import java.text.SimpleDateFormat
 import java.util.*
@@ -94,6 +96,30 @@ class AddAppointmentActivity : AppCompatActivity() {
 
     private fun saveData() {
         Toast.makeText(applicationContext, "Data Saved", Toast.LENGTH_SHORT).show()
+
+
+//        val model =
+
+//        val mainActivity = MainActivity()
+//        mainActivity.addElement(model)
+
+
+        val databaseHelper: DatabaseHelper = DatabaseHelper.getDB(applicationContext)
+        databaseHelper.notificationDAO().addNotification(
+            Notification(
+                binding.edName.text.toString(),
+                binding.edName.text.toString(),
+                binding.edName.text.toString(),
+                binding.edName.text.toString(),
+                binding.edName.text.toString()
+            )
+        )
+
+        val notifications: MutableList<com.aarafrao.busterlord_hiringscheduler.Database.Notification>? =
+            databaseHelper.notificationDAO().getAllNotifications()
+        for (i in notifications!!.indices) {
+
+        }
         startActivity(Intent(applicationContext, MainActivity::class.java))
         finish()
     }
