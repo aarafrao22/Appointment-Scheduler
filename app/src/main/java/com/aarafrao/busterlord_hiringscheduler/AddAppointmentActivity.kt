@@ -54,7 +54,7 @@ class AddAppointmentActivity : AppCompatActivity() {
         DatePickerDialog(
             this@AddAppointmentActivity, { _, year, monthOfYear, dayOfMonth ->
                 myCalendar.set(year, monthOfYear, dayOfMonth)
-                val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.US)
+                val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.US)
                 binding.edDate.setText(dateFormat.format(myCalendar.time))
             }, currentDate[Calendar.YEAR], currentDate[Calendar.MONTH], currentDate[Calendar.DATE]
         ).show()

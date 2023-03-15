@@ -1,10 +1,12 @@
 package com.aarafrao.busterlord_hiringscheduler
 
 import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -14,7 +16,6 @@ import com.aarafrao.busterlord_hiringscheduler.Database.Notification
 import com.aarafrao.busterlord_hiringscheduler.databinding.ActivityMainBinding
 import java.text.ParseException
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class MainActivity : AppCompatActivity(), View.OnClickListener, ClickListener {
@@ -108,16 +109,27 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, ClickListener {
 
 
         binding.simpleCalendarView.setOnDateChangeListener { calendarView, i, i1, i2 ->
-            val msg = i2.toString() + "/" + i1.plus(1) + " Year " + i
-            Toast.makeText(applicationContext, msg, Toast.LENGTH_SHORT).show()
+            var msg = ""
+            msg = if (i1 < 10) {
+                i2.toString() + "/0" + i1.plus(1) + "/" + i
+            } else {
+                i2.toString() + "/" + i1.plus(1) + "/" + i
+
+            }
+
             val a: MutableList<AppointModel> = ArrayList()
 
             for (j in 0 until mutableList.size) {
-
-                if (mutableList[j].date == i2.toString()) {
+                Log.d(TAG, "mutableList: " + mutableList[j].date)
+                if (mutableList[j].date.equals(msg)) {
                     a.add(mutableList[j])
+
                 }
             }
+
+
+            adapter.appointModelList = a
+            adapter.notifyDataSetChanged()
 
 
         }
