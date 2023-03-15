@@ -110,6 +110,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, ClickListener {
         binding.simpleCalendarView.setOnDateChangeListener { calendarView, i, i1, i2 ->
             val msg = "Selected date Day: " + i2 + " Month : " + i1 + 1 + " Year " + i
             Toast.makeText(applicationContext, msg, Toast.LENGTH_SHORT).show()
+            val a: MutableList<AppointModel> = ArrayList()
+
+            for (j in 0 until mutableList.size) {
+
+                if (mutableList[j].date == i2.toString()) {
+                    a.add(mutableList[j])
+                }
+            }
+
 
         }
 
