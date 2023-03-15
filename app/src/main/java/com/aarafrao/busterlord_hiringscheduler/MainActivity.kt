@@ -18,6 +18,7 @@ import java.text.ParseException
 import java.util.*
 
 
+@Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity(), View.OnClickListener, ClickListener {
     private lateinit var calendar: Calendar
     private lateinit var binding: ActivityMainBinding
@@ -25,7 +26,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, ClickListener {
     var mutableList: MutableList<AppointModel> = ArrayList()
 
 
-    @SuppressLint("UseCompatLoadingForDrawables")
+    @SuppressLint("UseCompatLoadingForDrawables", "NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -45,8 +46,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, ClickListener {
             Toast.makeText(applicationContext, "Today Data Showed", Toast.LENGTH_SHORT).show()
         }
         val databaseHelper: DatabaseHelper = DatabaseHelper.getDB(applicationContext)
-        val notifications: java.util.ArrayList<Notification> =
-            databaseHelper.notificationDAO().allNotifications as java.util.ArrayList<Notification>
+        val notifications: ArrayList<Notification> =
+            databaseHelper.notificationDAO().allNotifications as ArrayList<Notification>
 
         for (i in 0 until notifications.size) {
 
@@ -108,9 +109,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, ClickListener {
         })
 
 
-        binding.simpleCalendarView.setOnDateChangeListener { calendarView, i, i1, i2 ->
-            var msg = ""
-            msg = if (i1 < 10) {
+        binding.simpleCalendarView.setOnDateChangeListener { _, i, i1, i2 ->
+            val msg: String = if (i1 < 10) {
                 i2.toString() + "/0" + i1.plus(1) + "/" + i
             } else {
                 i2.toString() + "/" + i1.plus(1) + "/" + i
@@ -121,7 +121,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, ClickListener {
 
             for (j in 0 until mutableList.size) {
                 Log.d(TAG, "mutableList: " + mutableList[j].date)
-                if (mutableList[j].date.equals(msg)) {
+                if (mutableList[j].date == msg) {
                     a.add(mutableList[j])
 
                 }
@@ -138,22 +138,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, ClickListener {
     }
 
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onClick(p0: View?) {
         adapter.notifyDataSetChanged()
     }
 
-    public fun addElement(model: AppointModel) {
-        if (mutableList != null) {
-            mutableList.add(model)
-        } else {
-            mutableList = ArrayList()
-            mutableList.add(model)
-
-        }
-    }
-
     override fun onItemClicked(position: Int) {
-        val model = AppointModel(
+        AppointModel(
             mutableList[position].title,
             mutableList[position].location,
             mutableList[position].duration,

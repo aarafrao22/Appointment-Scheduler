@@ -42,8 +42,8 @@ class TripAdapter(appointModelList: List<AppointModel>, clickListener: ClickList
     fun filterData(query: String): List<AppointModel> {
         val filteredList = mutableListOf<AppointModel>()
         for (data in appointModelList) {
-            if (data.title.contains(query, ignoreCase = true) /*|| data.date.contains(query, ignoreCase = true) ||
-                data.location.contains(query, ignoreCase = true) || data.duration.contains(query, ignoreCase = true)*/) {
+            if (data.title.contains(query, ignoreCase = true) || data.date.contains(query, ignoreCase = true) ||
+                data.location.contains(query, ignoreCase = true) || data.duration.contains(query, ignoreCase = true)) {
                 filteredList.add(data)
             }
 
