@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity(), ClickListener {
 
 
                     if (currentAppointment.date == formattedDate) {
-                        //
+                        //here
 
 
                     }
