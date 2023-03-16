@@ -135,7 +135,7 @@ class AddAppointmentActivity : AppCompatActivity() {
                 myCalendar.set(Calendar.MINUTE, minute)
                 Log.v(TAG, "The chosen one " + myCalendar.time)
 
-                val dateFormat = SimpleDateFormat("hh:mm aa", Locale.US)
+                val dateFormat = SimpleDateFormat("HH:mm", Locale.US)
                 binding.edTime.setText(dateFormat.format(myCalendar.time))
 
             }, currentDate[Calendar.HOUR_OF_DAY], currentDate[Calendar.MINUTE], false

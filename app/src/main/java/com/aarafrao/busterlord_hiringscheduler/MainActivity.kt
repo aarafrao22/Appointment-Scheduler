@@ -3,37 +3,47 @@ package com.aarafrao.busterlord_hiringscheduler
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aarafrao.busterlord_hiringscheduler.Database.DatabaseHelper
 import com.aarafrao.busterlord_hiringscheduler.Database.Notification
 import com.aarafrao.busterlord_hiringscheduler.databinding.ActivityMainBinding
 import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 
 @Suppress("DEPRECATION")
-class MainActivity : AppCompatActivity(), View.OnClickListener, ClickListener {
+
+class MainActivity : AppCompatActivity(), ClickListener {
+
     private lateinit var calendar: Calendar
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var viewBinding: ActivityMainBinding
     private lateinit var adapter: TripAdapter
     var mutableList: MutableList<AppointModel> = ArrayList()
 
-
+    @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("UseCompatLoadingForDrawables", "NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        val view: View = binding.root
+
+        viewBinding = ActivityMainBinding.inflate(layoutInflater)
+        val view: View = viewBinding.root
         setContentView(view)
 
-        binding.btnFloat.setOnClickListener {
+        viewBinding.btnFloat.setOnClickListener {
             startActivity(
                 Intent(
                     applicationContext, AddAppointmentActivity::class.java
@@ -42,8 +52,26 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, ClickListener {
         }
         mutableList = ArrayList()
 
-        binding.todayBtn.setOnClickListener {
+        viewBinding.todayBtn.setOnClickListener {
             Toast.makeText(applicationContext, "Today Data Showed", Toast.LENGTH_SHORT).show()
+
+            if (mutableList.size > 0) {
+                for (i in 0 until mutableList.size - 1) {
+
+                    val currentAppointment = mutableList[i]
+                    val currentDate: LocalDate = LocalDate.now()
+                    val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+                    val formattedDate: String = currentDate.format(formatter)
+
+
+                    if (currentAppointment.date == formattedDate) {
+                        //
+
+
+                    }
+                }
+
+            }
         }
         val databaseHelper: DatabaseHelper = DatabaseHelper.getDB(applicationContext)
         val notifications: ArrayList<Notification> =
@@ -79,14 +107,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, ClickListener {
         calendar.add(Calendar.YEAR, 1)
 
 
-        binding.rv.layoutManager = LinearLayoutManager(this)
+        viewBinding.rv.layoutManager = LinearLayoutManager(this)
         adapter = TripAdapter(mutableList, this, applicationContext)
-        binding.rv.adapter = adapter
+        viewBinding.rv.adapter = adapter
         adapter.notifyDataSetChanged()
         val d = getDrawable(R.drawable.bg_white)
-        binding.simpleCalendarView.selectedDateVerticalBar = d
+        viewBinding.simpleCalendarView.selectedDateVerticalBar = d
 
-        binding.searchBar.addTextChangedListener(object : TextWatcher {
+        viewBinding.searchBar.addTextChangedListener(object : TextWatcher {
             @SuppressLint("NotifyDataSetChanged")
             override fun afterTextChanged(s: Editable?) {
 
@@ -95,11 +123,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, ClickListener {
                     val filteredData = adapter.filterData(s.toString())
                     adapter.appointModelList = filteredData
                     adapter.notifyDataSetChanged()
-                    binding.simpleCalendarView.visibility = View.GONE
+                    viewBinding.simpleCalendarView.visibility = View.GONE
                 } else {
                     adapter.appointModelList = mutableList
                     adapter.notifyDataSetChanged()
-                    binding.simpleCalendarView.visibility = View.VISIBLE
+                    viewBinding.simpleCalendarView.visibility = View.VISIBLE
 
                 }
             }
@@ -109,19 +137,60 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, ClickListener {
         })
 
 
-        binding.simpleCalendarView.setOnDateChangeListener { _, i, i1, i2 ->
-            val msg: String = if (i1 < 10) {
-                i2.toString() + "/0" + i1.plus(1) + "/" + i
-            } else {
-                i2.toString() + "/" + i1.plus(1) + "/" + i
+        viewBinding.btnResolve.setOnClickListener {
 
+            if (mutableList.size <= 1) {
+                return@setOnClickListener
             }
+
+            for (i in 0 until mutableList.size - 1) {
+
+                val currentAppointment = mutableList[i]
+                val nextAppointment = mutableList[i + 1]
+
+                if (currentAppointment.date == nextAppointment.date &&
+                    currentAppointment.time == nextAppointment.time
+                ) {
+                    nextAppointment.title += " (Postponed)"
+
+                    val time = LocalTime.parse(
+                        nextAppointment.time,
+                        DateTimeFormatter.ofPattern("HH:mm")
+                    ).plusMinutes(currentAppointment.duration.toLong())
+                    nextAppointment.time = time.format(DateTimeFormatter.ofPattern("HH:mm"))
+                }
+            }
+
+            viewBinding.rv.visibility = View.INVISIBLE
+            Handler().postDelayed({
+
+                adapter.appointModelList = mutableList
+                adapter.notifyDataSetChanged()
+                viewBinding.rv.visibility = View.VISIBLE
+                Toast.makeText(
+                    applicationContext,
+                    "Conflicts Resolved",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+            }, 600)
+
+        }
+
+
+        viewBinding.simpleCalendarView.setOnDateChangeListener { _, year, month, date ->
+
+            val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.US)
+            val calendar = Calendar.getInstance()
+            calendar[year, month] = date
+            val formattedDate = dateFormat.format(calendar.time)
+
 
             val a: MutableList<AppointModel> = ArrayList()
 
             for (j in 0 until mutableList.size) {
                 Log.d(TAG, "mutableList: " + mutableList[j].date)
-                if (mutableList[j].date == msg) {
+                if (mutableList[j].date == formattedDate) {
                     a.add(mutableList[j])
 
                 }
@@ -137,11 +206,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, ClickListener {
 
     }
 
-
-    @SuppressLint("NotifyDataSetChanged")
-    override fun onClick(p0: View?) {
-        adapter.notifyDataSetChanged()
-    }
 
     override fun onItemClicked(position: Int) {
         AppointModel(
