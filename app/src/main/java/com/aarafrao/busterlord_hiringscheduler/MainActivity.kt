@@ -53,29 +53,21 @@ class MainActivity : AppCompatActivity(), ClickListener {
         mutableList = ArrayList()
 
         viewBinding.todayBtn.setOnClickListener {
-            Toast.makeText(applicationContext, "Today Data Showed", Toast.LENGTH_SHORT).show()
 
-            if (mutableList.size > 0) {
-
-                val a: MutableList<AppointModel> = ArrayList()
-                for (i in 0 until mutableList.size - 1) {
-
-                    val currentAppointment = mutableList[i]
-                    val currentDate: LocalDate = LocalDate.now()
-                    val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-                    val formattedDate: String = currentDate.format(formatter)
-
-
-                    if (currentAppointment.date == formattedDate) {
-                        //here
-                        a.add(currentAppointment)
-
-                    }
+            if (mutableList.isNotEmpty()) {
+                val a = mutableList.filter {
+                    it.date == LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
                 }
 
-                adapter.appointModelList = a
-                adapter.notifyDataSetChanged()
-
+                if (a.isNotEmpty()) {
+                    adapter.appointModelList = a
+                    adapter.notifyDataSetChanged()
+                    showToast("Today Data Showed")
+                } else {
+                    showToast("No Appointments today")
+                }
+            } else {
+                showToast("Please Add Some Data")
             }
         }
         val databaseHelper: DatabaseHelper = DatabaseHelper.getDB(applicationContext)
@@ -155,14 +147,15 @@ class MainActivity : AppCompatActivity(), ClickListener {
 
                 for (j in 0 until mutableList.size) {
 
-                    if (i!=j){
+                    if (i != j) {
                         if (currentAppointment.date == mutableList[j].date &&
                             currentAppointment.time == mutableList[j].time
                         ) {
 
                             mutableList[j].title += " (Postponed)"
 
-                            val time = LocalTime.parse(mutableList[j].time,
+                            val time = LocalTime.parse(
+                                mutableList[j].time,
                                 DateTimeFormatter.ofPattern("HH:mm")
                             ).plusMinutes(currentAppointment.duration.toLong())
 
@@ -170,19 +163,6 @@ class MainActivity : AppCompatActivity(), ClickListener {
                         }
                     }
                 }
-//                val nextAppointment = mutableList[i + 1]
-
-//                if (currentAppointment.date == nextAppointment.date &&
-//                    currentAppointment.time == nextAppointment.time
-//                ) {
-//                    nextAppointment.title += " (Postponed)"
-//
-//                    val time = LocalTime.parse(
-//                        nextAppointment.time,
-//                        DateTimeFormatter.ofPattern("HH:mm")
-//                    ).plusMinutes(currentAppointment.duration.toLong())
-//                    nextAppointment.time = time.format(DateTimeFormatter.ofPattern("HH:mm"))
-//                }
             }
 
             viewBinding.rv.visibility = View.INVISIBLE
@@ -228,6 +208,10 @@ class MainActivity : AppCompatActivity(), ClickListener {
         }
 
 
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
     }
 
 
