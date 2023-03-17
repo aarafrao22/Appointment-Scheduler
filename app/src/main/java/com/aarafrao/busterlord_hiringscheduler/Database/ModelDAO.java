@@ -8,14 +8,14 @@ import androidx.room.Query;
 import java.util.List;
 
 @Dao
-public interface NotificationDAO {
+public interface ModelDAO {
     @Query("select * FROM notifications")
-    List<Notification> getAllNotifications();
+    List<Model> getAllNotifications();
 
     @Insert
-    void addNotification(Notification notification);
+    void addNotification(Model model);
 
     @Delete
-    void deleteNotification(Notification notification);
+    void deleteNotification(Model model);
 
 }

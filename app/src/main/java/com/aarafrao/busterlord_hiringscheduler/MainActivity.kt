@@ -15,7 +15,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aarafrao.busterlord_hiringscheduler.Database.DatabaseHelper
-import com.aarafrao.busterlord_hiringscheduler.Database.Notification
+import com.aarafrao.busterlord_hiringscheduler.Database.Model
 import com.aarafrao.busterlord_hiringscheduler.databinding.ActivityMainBinding
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity(), ClickListener {
 
     private lateinit var calendar: Calendar
     private lateinit var viewBinding: ActivityMainBinding
-    private lateinit var adapter: TripAdapter
+    private lateinit var adapter: Adapter
     var mutableList: MutableList<AppointModel> = ArrayList()
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -71,21 +71,21 @@ class MainActivity : AppCompatActivity(), ClickListener {
             }
         }
         val databaseHelper: DatabaseHelper = DatabaseHelper.getDB(applicationContext)
-        val notifications: ArrayList<Notification> =
-            databaseHelper.notificationDAO().allNotifications as ArrayList<Notification>
+        val models: ArrayList<Model> =
+            databaseHelper.notificationDAO().allNotifications as ArrayList<Model>
 
-        for (i in 0 until notifications.size) {
+        for (i in 0 until models.size) {
 
             try {
-                if (notifications.size > 0) {
+                if (models.size > 0) {
 
                     mutableList.add(
                         AppointModel(
-                            notifications[i].title,
-                            notifications[i].location,
-                            notifications[i].duration,
-                            notifications[i].date,
-                            notifications[i].time
+                            models[i].title,
+                            models[i].location,
+                            models[i].duration,
+                            models[i].date,
+                            models[i].time
                         )
                     )
 
@@ -105,7 +105,7 @@ class MainActivity : AppCompatActivity(), ClickListener {
 
 
         viewBinding.rv.layoutManager = LinearLayoutManager(this)
-        adapter = TripAdapter(mutableList, this, applicationContext)
+        adapter = Adapter(mutableList, this, applicationContext)
         viewBinding.rv.adapter = adapter
         adapter.notifyDataSetChanged()
         val d = getDrawable(R.drawable.bg_white)
@@ -134,7 +134,10 @@ class MainActivity : AppCompatActivity(), ClickListener {
         })
 
 
+        //clean conflicts
+
         viewBinding.btnResolve.setOnClickListener {
+            var count = 0
 
             if (mutableList.size <= 1) {
                 return@setOnClickListener
@@ -153,6 +156,7 @@ class MainActivity : AppCompatActivity(), ClickListener {
                         ) {
 
                             mutableList[j].title += " (Postponed)"
+                            count++
 
                             val time = LocalTime.parse(
                                 mutableList[j].time,
@@ -166,6 +170,7 @@ class MainActivity : AppCompatActivity(), ClickListener {
             }
 
             viewBinding.rv.visibility = View.INVISIBLE
+
             Handler().postDelayed({
 
                 adapter.appointModelList = mutableList
@@ -173,7 +178,7 @@ class MainActivity : AppCompatActivity(), ClickListener {
                 viewBinding.rv.visibility = View.VISIBLE
                 Toast.makeText(
                     applicationContext,
-                    "Conflicts Resolved",
+                    "$count Conflicts Resolved",
                     Toast.LENGTH_SHORT
                 ).show()
 
@@ -216,12 +221,18 @@ class MainActivity : AppCompatActivity(), ClickListener {
 
 
     override fun onItemClicked(position: Int) {
-        AppointModel(
-            mutableList[position].title,
-            mutableList[position].location,
-            mutableList[position].duration,
-            mutableList[position].date,
-            mutableList[position].time
-        )
+
+
+        val shareText = mutableList[position].title + "\n At: " +
+                mutableList[position].location + "\n Duration: " +
+                mutableList[position].duration + " min \n Date: " +
+                mutableList[position].date + "\n Time: " +
+                mutableList[position].time
+
+        val shareIntent = Intent(Intent.ACTION_SEND)
+        shareIntent.type = "text/plain"
+        shareIntent.putExtra(Intent.EXTRA_TEXT, shareText)
+
+        startActivity(Intent.createChooser(shareIntent, "Share using"))
     }
 }

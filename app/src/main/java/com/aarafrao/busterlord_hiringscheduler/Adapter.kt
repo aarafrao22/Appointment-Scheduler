@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class TripAdapter(appointModelList: List<AppointModel>, clickListener: ClickListener, context: Context) :
-    RecyclerView.Adapter<TripAdapter.VH>() {
+class Adapter(appointModelList: List<AppointModel>, clickListener: ClickListener, context: Context) :
+    RecyclerView.Adapter<Adapter.VH>() {
     var appointModelList: List<AppointModel>
     private val clickListener: ClickListener
     private val context: Context

@@ -6,7 +6,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = Notification.class, exportSchema = false, version = 1)
+@Database(entities = Model.class, exportSchema = false, version = 1)
 public abstract class DatabaseHelper extends RoomDatabase {
 
     private static final String DB_NAME = "notifications";
@@ -22,5 +22,5 @@ public abstract class DatabaseHelper extends RoomDatabase {
         return instance;
     }
 
-    public abstract NotificationDAO notificationDAO();
+    public abstract ModelDAO notificationDAO();
 }

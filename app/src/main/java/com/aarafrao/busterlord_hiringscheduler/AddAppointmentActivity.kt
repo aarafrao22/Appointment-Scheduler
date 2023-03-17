@@ -9,7 +9,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.aarafrao.busterlord_hiringscheduler.Database.DatabaseHelper
-import com.aarafrao.busterlord_hiringscheduler.Database.Notification
+import com.aarafrao.busterlord_hiringscheduler.Database.Model
 import com.aarafrao.busterlord_hiringscheduler.databinding.ActivityAddAppointmentBinding
 import java.text.SimpleDateFormat
 import java.util.*
@@ -106,7 +106,7 @@ class AddAppointmentActivity : AppCompatActivity() {
 
         val databaseHelper: DatabaseHelper = DatabaseHelper.getDB(applicationContext)
         databaseHelper.notificationDAO().addNotification(
-            Notification(
+            Model(
                 binding.edName.text.toString(),
                 binding.edPlace.text.toString(),
                 binding.edDuration.text.toString(),
@@ -115,10 +115,10 @@ class AddAppointmentActivity : AppCompatActivity() {
             )
         )
 
-        val notifications: MutableList<Notification>? =
+        val models: MutableList<Model>? =
             databaseHelper.notificationDAO().allNotifications
-        for (i in notifications!!.indices) {
-            Log.d(TAG, "saveData: $notifications.")
+        for (i in models!!.indices) {
+            Log.d(TAG, "saveData: $models.")
         }
         startActivity(Intent(applicationContext, MainActivity::class.java))
         finish()
