@@ -105,7 +105,7 @@ class AddAppointmentActivity : AppCompatActivity() {
 
 
         val databaseHelper: DatabaseHelper = DatabaseHelper.getDB(applicationContext)
-        databaseHelper.notificationDAO().addNotification(
+        databaseHelper.notificationDAO().addAppointment(
             Model(
                 binding.edName.text.toString(),
                 binding.edPlace.text.toString(),
@@ -116,7 +116,7 @@ class AddAppointmentActivity : AppCompatActivity() {
         )
 
         val models: MutableList<Model>? =
-            databaseHelper.notificationDAO().allNotifications
+            databaseHelper.notificationDAO().allAppointments
         for (i in models!!.indices) {
             Log.d(TAG, "saveData: $models.")
         }

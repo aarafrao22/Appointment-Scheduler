@@ -2,6 +2,7 @@ package com.aarafrao.busterlord_hiringscheduler
 
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -12,6 +13,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aarafrao.busterlord_hiringscheduler.Database.DatabaseHelper
@@ -23,12 +25,14 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 @Suppress("DEPRECATION")
 
 class MainActivity : AppCompatActivity(), ClickListener {
-
+    private lateinit var models: ArrayList<Model>
+    private lateinit var databaseHelper: DatabaseHelper
     private lateinit var calendar: Calendar
     private lateinit var viewBinding: ActivityMainBinding
     private lateinit var adapter: Adapter
@@ -70,9 +74,9 @@ class MainActivity : AppCompatActivity(), ClickListener {
                 showToast("Please Add Some Data")
             }
         }
-        val databaseHelper: DatabaseHelper = DatabaseHelper.getDB(applicationContext)
-        val models: ArrayList<Model> =
-            databaseHelper.notificationDAO().allNotifications as ArrayList<Model>
+
+        databaseHelper = DatabaseHelper.getDB(applicationContext)
+        models = databaseHelper.notificationDAO().allAppointments as ArrayList<Model>
 
         for (i in 0 until models.size) {
 
@@ -88,8 +92,6 @@ class MainActivity : AppCompatActivity(), ClickListener {
                             models[i].time
                         )
                     )
-
-
                 }
             } catch (e: ParseException) {
                 e.printStackTrace()
@@ -221,8 +223,6 @@ class MainActivity : AppCompatActivity(), ClickListener {
 
 
     override fun onItemClicked(position: Int) {
-
-
         val shareText = mutableList[position].title + "\n At: " +
                 mutableList[position].location + "\n Duration: " +
                 mutableList[position].duration + " min \n Date: " +
@@ -234,5 +234,64 @@ class MainActivity : AppCompatActivity(), ClickListener {
         shareIntent.putExtra(Intent.EXTRA_TEXT, shareText)
 
         startActivity(Intent.createChooser(shareIntent, "Share using"))
+    }
+
+    override fun onDeleteClicked(position: Int) {
+        showAlertDialogue2(R.drawable.baseline_more_horiz_24, position)
+
+    }
+
+    private fun showAlertDialogue2(icon: Int, position: Int) {
+        val builder1 = AlertDialog.Builder(this)
+        builder1.setTitle("Alert")
+        builder1.setMessage("Do you want to Delete this Appointment")
+        builder1.setIcon(icon)
+        builder1.setCancelable(true)
+        builder1.setNegativeButton(
+            "Cancel"
+        ) { dialog: DialogInterface, _: Int -> dialog.cancel() }
+        builder1.setPositiveButton(
+            "OK"
+        ) { dialog: DialogInterface, _: Int ->
+            dialog.cancel()
+            deleteItem(position)
+        }
+        val alert11 = builder1.create()
+        if (!this@MainActivity.isFinishing) {
+            alert11.show()
+        }
+    }
+
+    private fun deleteItem(position: Int) {
+        val model = models[position]
+        databaseHelper.notificationDAO().deleteNotification(model)
+        Toast.makeText(applicationContext, "Deleted", Toast.LENGTH_SHORT).show()
+        databaseHelper = DatabaseHelper.getDB(applicationContext)
+        models = databaseHelper.notificationDAO().allAppointments as ArrayList<Model>
+
+        mutableList = ArrayList()
+        for (i in 0 until models.size) {
+
+            try {
+                if (models.size > 0) {
+
+                    mutableList.add(
+                        AppointModel(
+                            models[i].title,
+                            models[i].location,
+                            models[i].duration,
+                            models[i].date,
+                            models[i].time
+                        )
+                    )
+                }
+            } catch (e: ParseException) {
+                e.printStackTrace()
+            }
+
+        }
+        adapter.appointModelList = mutableList
+        adapter.notifyDataSetChanged()
+
     }
 }

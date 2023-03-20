@@ -10,10 +10,10 @@ import java.util.List;
 @Dao
 public interface ModelDAO {
     @Query("select * FROM notifications")
-    List<Model> getAllNotifications();
+    List<Model> getAllAppointments();
 
     @Insert
-    void addNotification(Model model);
+    void addAppointment(Model model);
 
     @Delete
     void deleteNotification(Model model);
