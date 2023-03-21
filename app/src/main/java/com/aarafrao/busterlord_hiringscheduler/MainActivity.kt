@@ -21,11 +21,12 @@ import com.aarafrao.busterlord_hiringscheduler.Database.Model
 import com.aarafrao.busterlord_hiringscheduler.databinding.ActivityMainBinding
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.time.Duration
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 @Suppress("DEPRECATION")
@@ -106,6 +107,7 @@ class MainActivity : AppCompatActivity(), ClickListener {
         calendar.add(Calendar.YEAR, 1)
 
 
+        mutableList.sortBy { appointModel -> appointModel.time }
         viewBinding.rv.layoutManager = LinearLayoutManager(this)
         adapter = Adapter(mutableList, this, applicationContext)
         viewBinding.rv.adapter = adapter
@@ -143,6 +145,8 @@ class MainActivity : AppCompatActivity(), ClickListener {
 
             if (mutableList.size <= 1) {
                 return@setOnClickListener
+            } else {
+                mutableList.sortBy { model -> model.time }
             }
 
             for (i in 0 until mutableList.size) {
@@ -151,21 +155,54 @@ class MainActivity : AppCompatActivity(), ClickListener {
 
 
                 for (j in 0 until mutableList.size) {
+                    val nextAppointment = mutableList[j]
+
+                    val curTimeAddedWithDuration = LocalTime.parse(
+                        currentAppointment.time, DateTimeFormatter.ofPattern("HH:mm")
+                    ).plusMinutes(currentAppointment.duration.toLong())
+                        .format(DateTimeFormatter.ofPattern("HH:mm"))
+
+                    val nextTimeAddedWithDuration = LocalTime.parse(
+                        nextAppointment.time, DateTimeFormatter.ofPattern("HH:mm")
+                    ).plusMinutes(currentAppointment.duration.toLong())
+                        .format(DateTimeFormatter.ofPattern("HH:mm"))
+
+
 
                     if (i != j) {
-                        if (currentAppointment.date == mutableList[j].date &&
-                            currentAppointment.time == mutableList[j].time
-                        ) {
+                        if (currentAppointment.date == nextAppointment.date) {
 
-                            mutableList[j].title += " (Postponed)"
-                            count++
+                            val greater =
+                                getGreaterTime(curTimeAddedWithDuration, nextAppointment.time)
 
-                            val time = LocalTime.parse(
-                                mutableList[j].time,
-                                DateTimeFormatter.ofPattern("HH:mm")
-                            ).plusMinutes(currentAppointment.duration.toLong())
 
-                            mutableList[j].time = time.format(DateTimeFormatter.ofPattern("HH:mm"))
+
+                            if (currentAppointment.time == nextAppointment.time) {
+
+                                if (!currentAppointment.title.contains("(Postponed)")) {
+
+                                    currentAppointment.title += " (Postponed)"
+                                    count++
+                                    currentAppointment.time = nextTimeAddedWithDuration
+                                }
+
+                            } else {
+
+                                //check if current time + current duration
+                                //is conflicting with next app time
+
+                                if (isConflict(currentAppointment.time,currentAppointment.duration,nextAppointment.time)){
+
+
+                                    if (!currentAppointment.title.contains("(Postponed)")) {
+
+                                        currentAppointment.title += " (Postponed)"
+                                        count++
+                                        currentAppointment.time = nextTimeAddedWithDuration
+                                    }
+                                }
+                            }
+
                         }
                     }
                 }
@@ -174,14 +211,14 @@ class MainActivity : AppCompatActivity(), ClickListener {
             viewBinding.rv.visibility = View.INVISIBLE
 
             Handler().postDelayed({
+                mutableList.sortBy { appointModel -> appointModel.time }
 
                 adapter.appointModelList = mutableList
+
                 adapter.notifyDataSetChanged()
                 viewBinding.rv.visibility = View.VISIBLE
                 Toast.makeText(
-                    applicationContext,
-                    "$count Conflicts Resolved",
-                    Toast.LENGTH_SHORT
+                    applicationContext, "$count Conflicts Resolved", Toast.LENGTH_SHORT
                 ).show()
 
             }, 600)
@@ -217,17 +254,42 @@ class MainActivity : AppCompatActivity(), ClickListener {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun isConflict(time: String, duration: String, time1: String): Boolean {
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+        val start = LocalDateTime.parse(time, formatter)
+        val end = start.plus(Duration.parse(duration))
+        val start1 = LocalDateTime.parse(time1, formatter)
+        val end1 = start1.plus(Duration.parse(duration))
+
+        return (start.isBefore(end1) && end.isAfter(start1)) || (start1.isBefore(end) && end1.isAfter(start))
+    }
+
+
+
+    private fun getGreaterTime(time1: String, time2: String): String {
+        // Extract hours and minutes from time1
+        val time1Hours = time1.substringBefore(":").toInt()
+        val time1Minutes = time1.substringAfter(":").toInt()
+        // Extract hours and minutes from time2
+        val time2Hours = time2.substringBefore(":").toInt()
+        val time2Minutes = time2.substringAfter(":").toInt()
+        // Compare times and return greater time
+        return if (time1Hours > time2Hours || (time1Hours == time2Hours && time1Minutes > time2Minutes)) {
+            time1
+        } else {
+            time2
+        }
+    }
+
     private fun showToast(message: String) {
         Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
     }
 
 
     override fun onItemClicked(position: Int) {
-        val shareText = mutableList[position].title + "\n At: " +
-                mutableList[position].location + "\n Duration: " +
-                mutableList[position].duration + " min \n Date: " +
-                mutableList[position].date + "\n Time: " +
-                mutableList[position].time
+        val shareText =
+            mutableList[position].title + "\n At: " + mutableList[position].location + "\n Duration: " + mutableList[position].duration + " min \n Date: " + mutableList[position].date + "\n Time: " + mutableList[position].time
 
         val shareIntent = Intent(Intent.ACTION_SEND)
         shareIntent.type = "text/plain"
@@ -262,6 +324,7 @@ class MainActivity : AppCompatActivity(), ClickListener {
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun deleteItem(position: Int) {
         val model = models[position]
         databaseHelper.notificationDAO().deleteNotification(model)

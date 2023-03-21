@@ -14,6 +14,7 @@ class Adapter(
     context: Context
 ) :
     RecyclerView.Adapter<Adapter.VH>() {
+
     var appointModelList: List<AppointModel>
     private val clickListener: ClickListener
     private val context: Context
