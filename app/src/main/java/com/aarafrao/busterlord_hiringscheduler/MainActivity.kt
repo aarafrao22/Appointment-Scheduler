@@ -88,7 +88,8 @@ class MainActivity : AppCompatActivity(), ClickListener {
                             models[i].location,
                             models[i].duration,
                             models[i].date,
-                            models[i].time
+                            models[i].time,
+                            models[i].phone
                         )
                     )
                 }
@@ -308,7 +309,8 @@ class MainActivity : AppCompatActivity(), ClickListener {
                             models[i].location,
                             models[i].duration,
                             models[i].date,
-                            models[i].time
+                            models[i].time,
+                            models[i].phone
                         )
                     )
                 }

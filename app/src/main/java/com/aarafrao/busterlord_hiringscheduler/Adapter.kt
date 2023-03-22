@@ -37,7 +37,8 @@ class Adapter(
             appointModelList[position].location,
             appointModelList[position].duration,
             appointModelList[position].date,
-            appointModelList[position].title
+            appointModelList[position].title,
+            appointModelList[position].phone
         )
     }
 
@@ -70,6 +71,7 @@ class Adapter(
         private val distance: TextView
         private val date: TextView
         private val title: TextView
+        private val txtPhone: TextView
         private val imgDelete: ImageView
 
         init {
@@ -79,6 +81,7 @@ class Adapter(
             date = itemView.findViewById(R.id.date)
             imgDelete = itemView.findViewById(R.id.btnBin)
             title = itemView.findViewById(R.id.meetingTitle)
+            txtPhone = itemView.findViewById(R.id.txtPhone)
         }
 
         fun setData(
@@ -86,13 +89,15 @@ class Adapter(
             location2: String,
             distance: String,
             date: String,
-            title: String
+            title: String,
+            phone: String
         ) {
             this.time1.text = time1
             this.location1.text = location2
             this.distance.text = distance
             this.date.text = date
             this.title.text = title
+            this.txtPhone.text = phone
 
 
             itemView.setOnClickListener {

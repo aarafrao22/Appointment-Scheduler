@@ -5,5 +5,6 @@ data class AppointModel(
     var location: String,
     var duration: String,
     var date: String,
-    var time: String
+    var time: String,
+    var phone: String
 )

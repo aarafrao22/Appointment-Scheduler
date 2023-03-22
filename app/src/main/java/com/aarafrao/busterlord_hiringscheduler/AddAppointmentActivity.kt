@@ -67,16 +67,18 @@ class AddAppointmentActivity : AppCompatActivity() {
             if (binding.edDate.text.toString() != "") {
                 if (binding.edDuration.text.toString() != "") {
                     if (binding.edPlace.text.toString() != "") {
+                        if (binding.edPhone.text.toString() != "") {
 
-                        if (!isConflict())
-                            saveData()
-                        else
-                            Toast.makeText(
-                                this@AddAppointmentActivity,
-                                "found conflict",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            if (!isConflict())
+                                saveData()
+                            else
+                                Toast.makeText(
+                                    this@AddAppointmentActivity,
+                                    "found conflict",
+                                    Toast.LENGTH_SHORT
+                                ).show()
 
+                        } else binding.edPhoneLayout.error = "Invalid Input"
                     } else binding.edPlaceLayout.error = "Invalid Input"
                 } else binding.edDurationLayout.error = "Invalid Input"
             } else binding.edDateLayout.error = "Invalid Input"
@@ -111,7 +113,8 @@ class AddAppointmentActivity : AppCompatActivity() {
                 binding.edPlace.text.toString(),
                 binding.edDuration.text.toString(),
                 binding.edTime.text.toString(),
-                binding.edDate.text.toString()
+                binding.edDate.text.toString(),
+                binding.edPhone.text.toString()
             )
         )
 

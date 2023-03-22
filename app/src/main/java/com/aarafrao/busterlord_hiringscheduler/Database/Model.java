@@ -25,27 +25,35 @@ public class Model {
     @ColumnInfo(name = "date")
     private String date;
 
+    @ColumnInfo(name = "phone")
+    private String phone;
 
-    public Model(int id, String title, String location, String duration, String time, String date) {
+
+    public Model(int id, String title, String location, String duration, String time, String date,String phone) {
         this.id = id;
         this.title = title;
         this.location = location;
         this.duration = duration;
         this.time = time;
         this.date = date;
+        this.phone = phone;
     }
 
     @Ignore
-    public Model(String title, String location, String duration, String time, String date) {
+    public Model(String title, String location, String duration, String time, String date,String phone) {
         this.title = title;
         this.location = location;
         this.duration = duration;
         this.time = time;
         this.date = date;
+        this.phone = phone;
     }
 
     public String getTitle() {
         return title;
+    }
+    public String getPhone() {
+        return phone;
     }
 
     public int getId() {
