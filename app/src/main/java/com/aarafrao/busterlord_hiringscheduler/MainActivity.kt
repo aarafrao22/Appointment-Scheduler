@@ -151,11 +151,10 @@ class MainActivity : AppCompatActivity(), ClickListener {
 
                 val currentAppointment = mutableList[i]
 
-                for (j in 0 until mutableList.size) {
+                for (j in i until mutableList.size) {
                     val nextAppointment = mutableList[j]
 
                     if (i != j) {
-                        mutableList.sortBy { appointModel -> appointModel.time }
 
                         if (currentAppointment.date == nextAppointment.date) {
 
@@ -175,12 +174,6 @@ class MainActivity : AppCompatActivity(), ClickListener {
 
                             if (!isTrue) {
 
-                                val currentAppointment = mutableList[j]
-                                val timeRange = LocalTime.parse(
-                                    currentAppointment.time,
-                                    DateTimeFormatter.ofPattern("HH:mm")
-                                ).plusMinutes(currentAppointment.duration.toLong())
-                                    .format(DateTimeFormatter.ofPattern("HH:mm"))
 
                                 if (!nextAppointment.title.contains("(Postponed)"))
                                     nextAppointment.title += " (Postponed)"
@@ -193,6 +186,7 @@ class MainActivity : AppCompatActivity(), ClickListener {
 
                         }
                     }
+                    mutableList.sortBy { appointModel -> appointModel.time }
                 }
             }
 
